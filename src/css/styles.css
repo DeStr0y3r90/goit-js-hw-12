@@ -1,156 +1,142 @@
+@import url('./reset.css');
+
 :root {
-  --font-family: "Montserrat", sans-serif;
-}
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
 
-body {
-  margin: 0;
-  padding: 0;
-}
+  color: #242424;
+  background-color: rgba(255, 255, 255, 0.87);
 
-.container-form {
-  width: 100%;
-  max-width: 1128px;
-  margin: 35px auto 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
 .form {
   display: flex;
-  gap: 10px;
-}
-
-.input {
-  border-radius: 4px;
-  width: 266px;
-  height: 36px;
-  font-family: var(--font-family);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  letter-spacing: 0.04em;
-  color: #808080;
-  border: 1px solid #808080;
-}
-
-.input:hover {
-  border: 1px solid black;
-}
-
-.input:focus {
-  border: 1px solid #4E75FF;
-}
-
-
-.button {
-  border-radius: 8px;
-  border: none;
-  padding: 8px 16px;
-  width: 91px;
-  height: 40px;
-  background: #4e75ff;
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 150%;
-  letter-spacing: 0.04em;
-  color: #fff;
-}
-
-.gallery {
-  width: 1128px;
-  margin: auto;
-  padding: 0;
-  display: flex;
+  gap: 8px;
   justify-content: center;
-  gap: 24px;
-  flex-wrap: wrap;
-  user-select: none;
-  list-style: none;
 }
 
-.gallery-item {
-  width: calc((100% - 48px) / 3);
-  box-sizing: border-box;
-  text-align: center;
-  border: 1px solid #808080;
-}
-
-.gallery-link {
-  text-decoration: none;
-}
-
-.gallery-image {
-  width: 360px;
-  height: 200px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.gallery-image:hover {
-  transform: scale(1.05);
-}
-
-.parameters {
+button {
   display: flex;
-  justify-content: space-around;
-}
-
-.options {
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 133%;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  background-color: #4e75ff;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
   letter-spacing: 0.04em;
-  color: #2e2f42;
+  cursor: pointer;
+  border: none;
 }
 
-.quantity {
-  font-family: var(--font-family);
+.load {
+  margin: 0 auto;
+}
+
+button:hover {
+  background-color: #6c8cff;
+}
+
+input {
+  width: 272px;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #808080;
+  padding: 8px 16px;
+  color: #808080;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 200%;
+  line-height: 1.5;
   letter-spacing: 0.04em;
-  color: #2e2f42;
+}
+
+input:hover {
+  border: 1px solid #000;
+}
+
+input:active {
+  border: 1px solid #4e75ff;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  width: 1440px;
+  column-gap: 24px;
+  row-gap: 24px;
+  justify-content: center;
+  margin: 32px auto;
+}
+
+.container {
+  display: flex;
+  background-color: aqua;
+  gap: 8px;
+  justify-content: center;
+  width: 360px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 p {
-  margin: 0;
+  color: #000;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+.info {
+  font-weight: bold;
 }
 
+img {
+  display: block;
+}
 
 .loader {
-  margin-left: 50%;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: inline-block;
   position: relative;
-  background: linear-gradient(0deg, rgba(210, 195, 190, 0.2) 33%, #ff3d00 100%);
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+  width: 100px;
+  height: 100px;
+  margin: 16px auto;
 }
 
-.loader::after {
+.loader:before,
+.loader:after {
   content: '';
-  box-sizing: border-box;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 44px;
-  height: 44px;
   border-radius: 50%;
-  background: #cde2ec;
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+}
+.loader:after {
+  box-shadow: 0 2px 0 #ff3d00 inset;
+  animation: rotate 2s linear infinite;
 }
 
-@keyframes rotation {
+@keyframes rotate {
   0% {
-    transform: rotate(0deg)
+    transform: rotate(0);
   }
-
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }

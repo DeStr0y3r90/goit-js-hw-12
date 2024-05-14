@@ -1,15 +1,10 @@
-// Імпорт axios
-import axios from 'axios';
 
-// Імпорт izitoast
+import axios from 'axios';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-
-// Імпорт simplelightbox
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-//  Скрипти
 const searchForm = document.querySelector('.form');
 const galleryOfPictures = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
@@ -25,7 +20,6 @@ let searchQuery;
 let lastPage;
 let galleryItemHeight;
 
-// Функція запиту на сервер та параметри запиту
 async function fetchPosts(value, page) {
   const params = new URLSearchParams({
     key: '41859392-e5bc4a8d4ece805d6453ecbd7',
@@ -40,7 +34,6 @@ async function fetchPosts(value, page) {
   return response;
 }
 
-// Функція для створення галереї
 function createGallery(value) {
   const markup = value.map(
     ({
@@ -97,7 +90,6 @@ function hasMoreData() {
   }
 }
 
-// Слухач форми
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
   galleryOfPictures.innerHTML = '';
@@ -159,7 +151,6 @@ searchForm.addEventListener('submit', async event => {
   }
 });
 
-//  Слухач для кнопки Load more
 loadButton.addEventListener('click', async event => {
   page += 1;
   loadButton.style.display = 'none';
