@@ -1,37 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla App Template</title>
+    
+    <script type="module" crossorigin src="/goit-js-hw-12/commonHelpers.js"></script>
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-12/assets/vendor-09d7c26e.js">
+    <link rel="stylesheet" href="/goit-js-hw-12/assets/vendor-1cd1f9d9.css">
+    <link rel="stylesheet" href="/goit-js-hw-12/assets/index-950f72af.css">
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search photo</title>
-  
-  <script type="module" crossorigin src="/goit-js-hw-12/commonHelpers.js"></script>
-  <link rel="modulepreload" crossorigin href="/goit-js-hw-12/assets/vendor-e65e6f9a.js">
-  <link rel="stylesheet" href="/goit-js-hw-12/assets/vendor-504fea61.css">
-  <link rel="stylesheet" href="/goit-js-hw-12/assets/index-950f72af.css">
-</head>
-
-<body>
-  <div class="container-form">
+  <body>
+    <!-- Форма для заповнення -->
     <form class="form">
-      <input class="input" type="text" name="search" placeholder="Search images..." required>
-      <button class="button">Search</button>
+      <input type="text" name="delay" placeholder="Search images..." />
+      <button class="search" type="submit" name="submit">Search</button>
     </form>
-  </div>
-  <span class="loader" style="display: none;"></span>
-
-  <div class="container-imag">
-    <ul class="gallery">
-
-    </ul>
-    <span class="loader-down" style="display: none;"></span>
-    <button class="button-load">Load more</button>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  
-</body>
-
+    <span class="loader"></span>
+    <ul class="gallery"></ul>
+    <button class="load" type="button" style="display: none">Load more</button>
+    
+  </body>
 </html>
