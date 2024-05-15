@@ -83,7 +83,7 @@ ul {
 
 .container {
   display: flex;
-  background-color: aqua;
+  background-color: fff;
   gap: 8px;
   justify-content: center;
   width: 360px;
