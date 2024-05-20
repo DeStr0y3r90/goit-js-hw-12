@@ -28,13 +28,13 @@
   }
   
   .search-form input:focus {
-    border-color: #6c5fbc;
+    border-color: #103ced;
   }
   
   .search-form button {
     border-radius: 10px;
     border: none;
-    background-color: #6c5fbc;
+    background-color: #103ced;
     font-weight: 500;
     font-size: 11px;
     line-height: 125%;
