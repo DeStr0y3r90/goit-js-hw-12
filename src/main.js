@@ -1,184 +1,93 @@
-
-import axios from 'axios';
+import { returnPromise } from './js/pixabay-api';
+import { returnMarkup } from './js/render-functions';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const searchForm = document.querySelector('.form');
-const galleryOfPictures = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
-const loadButton = document.querySelector('.load');
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionDelay: 250,
-  captionsData: 'alt',
-});
+const elSearchForm = document.querySelector('.js-search-form');
+const elSearchList = document.querySelector('.js-search-list');
+const elLoader = document.querySelector('.js-loader');
+const elLoaderMore = document.querySelector('.js-loader-more');
+const elBtnSearchMore = document.querySelector('.js-search-more');
 
 let page = 1;
-let perPage = 20;
-let searchQuery;
-let lastPage;
-let galleryItemHeight;
+let totalPage = 1;
+let query = '';
 
-async function fetchPosts(value, page) {
-  const params = new URLSearchParams({
-    key: '41859392-e5bc4a8d4ece805d6453ecbd7',
-    q: value,
-    per_page: perPage,
-    page,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-  });
-  const response = await axios.get(`https://pixabay.com/api/?${params}`);
-  return response;
-}
-
-function createGallery(value) {
-  const markup = value.map(
-    ({
-      webformatURL,
-      largeImageURL,
-      tags,
-      likes,
-      views,
-      comments,
-      downloads,
-    }) => `<li class="gallery-item">
-    <a  href="${largeImageURL}">
-    <img 
-    class="gallery-image"
-    src="${webformatURL}"
-    alt="${tags}"
-    width="360";
-    height="200";
-    />
-    </a>
-    <div class="container">
-    <div class="description">
-    <p class="info">Likes:</p>
-    <p>${likes}</p>
-    </div>
-    <div class="description">
-    <p class="info">Views:</p>
-    <p>${views}</p>
-    </div>
-    <div class="description">
-    <p class="info">Comments:</p>
-    <p>${comments}</p>
-    </div>
-    <div class="description">
-    <p class="info">Downloads:</p>
-    <p>${downloads}</p>
-    </div>
-    </div>
-    </li>`
-  );
-  return markup.join('');
-}
-
-function hasMoreData() {
-  if (page < lastPage) {
-    loadButton.style.display = 'block';
-  } else {
-    loadButton.style.display = 'none';
-    iziToast.info({
-      title: 'Info!',
-      message: `We're sorry, but you've reached the end of search results.`,
-      position: 'topRight',
-    });
-  }
-}
-
-searchForm.addEventListener('submit', async event => {
+elSearchForm.addEventListener('submit', async event => {
   event.preventDefault();
-  galleryOfPictures.innerHTML = '';
-  loader.style.display = 'block';
-  loadButton.style.display = 'none';
-  searchQuery = searchForm.elements.delay.value.trim();
-  page = 1;
-  if (searchQuery === '') {
-    loadButton.style.display = 'none';
-    galleryOfPictures.innerHTML = '';
-    loader.style.display = 'none';
-    iziToast.warning({
-      title: 'Warning!',
-      message: 'All fields must be filled!',
-      position: 'topRight',
-    });
-    return;
+
+  query = elSearchForm.elements.enterForSearsh.value.trim();
+  if (!query) return;
+  if (elBtnSearchMore.classList.contains('is-active')) {
+    elBtnSearchMore.classList.remove('is-active');
   }
+  elSearchList.innerHTML = '';
+  elLoader.classList.add('is-active');
+  page = 1;
+
   try {
-    loader.style.display = 'block';
-    galleryOfPictures.innerHTML = '';
-    galleryOfPictures.insertAdjacentElement('beforebegin', loader);
-    const {
-      data: { hits, totalHits },
-    } = await fetchPosts(searchQuery, page);
-    if (hits.length === 0) {
-      loader.style.display = 'none';
-      loadButton.style.display = 'none';
+    const { data } = await returnPromise(query, page);
+    if (!data.total) {
+      elLoader.classList.remove('is-active');
       iziToast.error({
-        title: 'Error!',
+        position: 'topRight',
         message:
           'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
       });
-      galleryOfPictures.innerHTML = '';
+      elSearchForm.reset();
       return;
-    } else {
-      galleryOfPictures.innerHTML = createGallery(hits);
-      lightbox.refresh();
-      loader.style.display = 'none';
-      lastPage = Math.ceil(totalHits / perPage);
-      galleryItemHeight = document
-        .querySelector('.gallery-item:first-child')
-        .getBoundingClientRect().height;
     }
-    hasMoreData();
+
+    elSearchList.innerHTML = `${returnMarkup(data.hits)}`;
+    elLoader.classList.remove('is-active');
+    elBtnSearchMore.classList.add('is-active');
+
+    if (data.totalHits < 15) {
+      elBtnSearchMore.classList.remove('is-active');
+      iziToast.info({
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+    }
+    lightbox.refresh();
   } catch (error) {
-    console.error(error);
-    iziToast.error({
-      title: 'Error!',
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
-      position: 'topRight',
-    });
-    loadButton.style.display = 'none';
-  } finally {
-    loader.style.display = 'none';
-    event.target.reset();
+    console.log(error);
   }
 });
 
-loadButton.addEventListener('click', async event => {
-  page += 1;
-  loadButton.style.display = 'none';
+elBtnSearchMore.addEventListener('click', async () => {
+  elLoaderMore.classList.add('is-active-more');
+  elBtnSearchMore.classList.remove('is-active');
+
   try {
-    loader.style.display = 'block';
-    galleryOfPictures.insertAdjacentElement('afterend', loader);
-    const result = await fetchPosts(searchQuery, page);
-    hasMoreData();
-    const newGalleryItems = await createGallery(result.data.hits);
-    galleryOfPictures.innerHTML += newGalleryItems;
+    const { data } = await returnPromise(query, ++page);
+    elSearchList.insertAdjacentHTML('beforeend', `${returnMarkup(data.hits)}`);
+
+    elLoaderMore.classList.remove('is-active-more');
+    elBtnSearchMore.classList.add('is-active');
     lightbox.refresh();
-    const newGalleryItemHeight = document
-      .querySelector('.gallery-item:last-child')
-      .getBoundingClientRect().height;
+
     window.scrollBy({
-      top: newGalleryItemHeight * 2,
+      top: elSearchList.firstChild.getBoundingClientRect().height * 2,
       behavior: 'smooth',
     });
+
+    totalPage = Math.ceil(data.totalHits / 15);
+    if (totalPage === page) {
+      elBtnSearchMore.classList.remove('is-active');
+      iziToast.info({
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+    }
   } catch (error) {
-    console.error(error);
-    iziToast.error({
-      title: 'Error!',
-      message:
-        'Sorry, there was an error processing your request. Please try again!',
-      position: 'topRight',
-    });
-    loadButton.style.display = 'none';
-  } finally {
-    loader.style.display = 'none';
+    console.log(error);
   }
+});
+
+const lightbox = new SimpleLightbox('.gallery-link', {
+  captionsData: 'alt',
+  captionDelay: 250,
 });
